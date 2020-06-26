@@ -1,0 +1,6 @@
+name: RiskAnalysis
+dependencies:
+  - django
+  - pip
+  - pip:
+    - tweepy

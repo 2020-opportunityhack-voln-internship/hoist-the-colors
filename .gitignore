@@ -1,0 +1,16 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+
+# Mac #
+.DS_store
+
+.idea/
+
+Risk_Analysis/authentication/credentials.json
+
+Risk_Analysis/templates/index.html
+
+Risk_Analysis/db.sqlite3

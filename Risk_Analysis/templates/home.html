@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="row">
+    <button class="btn btn-danger  mb-2">
+        <a href="/authentication/">Back to Login</a>
+    </button>
+    <div class="col-sm-12 mb-3">
+        {% for status in statuses %}
+        {{  status }}
+        <br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
