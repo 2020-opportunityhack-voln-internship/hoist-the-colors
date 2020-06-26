@@ -21,14 +21,8 @@ Project is created with:
 Clone this repo to your local machine using https://github.com/2020-opportunityhack-voln-internship/hoist-the-colors.git
 	
 ### Setup
-To run this project, install it locally using npm:
 
-```
-$ cd ../lorem
-$ npm install
-$ npm start
-```
-** The dependencies for this project are present in `environment.yml` **
+**The dependencies for this project are present in `environment.yml`**
 
 * To create an environment, execute
     ```shell script
@@ -47,7 +41,7 @@ $ npm start
     
     
     
-** Add a `credentials.json` file with your Twitter and Facebook credentials **
+**Add a `credentials.json` file with your Twitter and Facebook credentials**
 
 ```json
 {
@@ -58,3 +52,9 @@ $ npm start
 }
 ```
 
+**Run the application by navigating to the Django Project and starting the server**
+    ```shell script
+    cd Risk_Analysis
+    python manage.py runserver
+    ```
+Go to link https://localhost:8000/authenticate to authenticate users
