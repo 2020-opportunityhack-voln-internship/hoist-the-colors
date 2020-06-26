@@ -55,10 +55,10 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
 
 **Run the application by navigating to the Django Project and starting the server**
 
-    ```shell script
+
     cd Risk_Analysis
     python manage.py runserver
-    ```
+
     
  <br/>
 Go to link https://localhost:8000/authenticate to authenticate users
