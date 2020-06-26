@@ -41,6 +41,8 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
     
     
     
+    
+    
 **Add a `credentials.json` file with your Twitter and Facebook credentials**
 
 ```json
@@ -51,6 +53,8 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
   "facebook_client_secret" : "YOUR_FACEBOOK_CLIENT_SECRET"
 }
 ```
+
+
 
 **Run the application by navigating to the Django Project and starting the server**
     ```shell script
