@@ -38,10 +38,7 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
     ```shell script
     conda remove --name <env_name> --all
     ```
-    
-    
-    
-    
+<br/>
     
 **Add a `credentials.json` file with your Twitter and Facebook credentials**
 
@@ -54,7 +51,7 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
 }
 ```
 
-
+<br/>
 
 **Run the application by navigating to the Django Project and starting the server**
     ```shell script
