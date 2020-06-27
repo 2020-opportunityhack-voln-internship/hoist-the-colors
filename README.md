@@ -53,6 +53,12 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
 
 <br/>
 
+**Once you have configured your installation, run the following command to install the single database table that stores session data.
+
+```python manage.py migrate```
+
+<br/>
+
 **Run the application by navigating to the Django Project and starting the server**
 
 
