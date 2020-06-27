@@ -61,4 +61,4 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
 
     
  <br/>
-Go to link https://localhost:8000/authenticate to authenticate users
+Go to link https://localhost:8000/authentication to authenticate users
