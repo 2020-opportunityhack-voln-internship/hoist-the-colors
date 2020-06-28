@@ -53,7 +53,7 @@ Clone this repo to your local machine using https://github.com/2020-opportunityh
 
 <br/>
 
-**Once you have configured your installation, run the following command to install the single database table that stores session data.
+**Once you have configured your installation, run the following command to install the single database table that stores session data**
 
 ```shell script
 python manage.py migrate
