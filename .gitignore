@@ -14,3 +14,7 @@ Risk_Analysis/authentication/credentials.json
 Risk_Analysis/templates/index.html
 
 Risk_Analysis/db.sqlite3
+
+Risk_Analysis/Risk_Analysis/secrets.py
+
+model

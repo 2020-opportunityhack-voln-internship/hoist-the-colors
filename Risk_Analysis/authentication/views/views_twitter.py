@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from tweepy import OAuthHandler, API, Cursor
 import json
 from django.http import HttpResponse
+from scoring.views import preprocess
 
 # Create your views here.
 
@@ -47,5 +48,6 @@ def twitter_data(request):
     statuses = []
     for status in Cursor(api.user_timeline).items():
         statuses.append(status.text)
+    preprocess(request, statuses)
     return render(request, "home.html", {'statuses': statuses})
     # return render(request, "login.html")
