@@ -4,6 +4,8 @@ from tweepy import OAuthHandler, API, Cursor
 import json
 from django.http import HttpResponse
 from scoring.views import preprocess
+from pymongo import MongoClient
+
 
 # Create your views here.
 
@@ -34,14 +36,45 @@ def twitter_access_token(request):
     oauth.request_token = request_token
     verifier = request.GET.get('oauth_verifier')
     oauth.get_access_token(verifier)
-    request.session['token'] = (oauth.access_token, oauth.access_token_secret)
+    
+    # Create access_token dictonary
+    access_tokens = { 'access_token': oauth.access_token, 'access_token_secret': oauth.access_token_secret }
+    
+    # Connect to MongoDB
+    try:
+        conn = MongoClient()
+        print("Connected successfully!!!")
+        db = conn.database
 
+        # Created or Switched to collection names: tokens
+        collection = db.tokens
+        collection.insert_one(access_tokens)
+
+        # Close connection
+        conn.Close()
+    except:
+        print("Could not connect to MongoDB")
+    
     return redirect('twitter_data')
 
 
 # gets data from user utilizing access token
 def twitter_data(request):
-    token, token_secret = request.session['token']
+    # Connect to MongoDB to retrive access_token
+    try:
+        conn = MongoClient()
+        print("Connected successfully!!!")
+        db = conn.database
+        # Created or Switched to collection names: tokens
+        collection = db.tokens
+        cursor = collection.find()
+        for record in cursor:
+            print('record: ', record)
+            token = record['token']
+            token_secret = record['token_secret']
+    except:
+        print("Could not connect to MongoDB")
+
     oauth = OAuthHandler(consumer_key, consumer_secret, callback)
     oauth.set_access_token(token, token_secret)
     api = API(oauth)
