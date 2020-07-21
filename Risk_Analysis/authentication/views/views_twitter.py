@@ -5,6 +5,7 @@ import json
 from django.http import HttpResponse
 from scoring.views import preprocess
 from pymongo import MongoClient
+from threading import Thread
 
 
 # Create your views here.
@@ -51,7 +52,7 @@ def twitter_access_token(request):
         collection.insert_one(access_tokens)
 
         # Close connection
-        conn.Close()
+        conn.close()
     except:
         print("Could not connect to MongoDB")
     
@@ -70,8 +71,9 @@ def twitter_data(request):
         cursor = collection.find()
         for record in cursor:
             print('record: ', record)
-            token = record['token']
-            token_secret = record['token_secret']
+            token = record['access_token']
+            token_secret = record['access_token_secret']
+        conn.close()
     except:
         print("Could not connect to MongoDB")
 
@@ -81,6 +83,7 @@ def twitter_data(request):
     statuses = []
     for status in Cursor(api.user_timeline).items():
         statuses.append(status.text)
-    preprocess(request, statuses)
+    thread_preprocess_data = Thread(target=preprocess, args=(request, statuses))
+    thread_preprocess_data.start()
     return render(request, "home.html", {'statuses': statuses})
     # return render(request, "login.html")
