@@ -20,6 +20,8 @@ Project is created with:
 - tweepy version: 3.8.0
 - pymongo version: 3.10.1
 - cryptography version: 3.0
+- djongo version: 1.3.3
+- djangorestframework version: 3.11.0
 
 ## Installation
 
