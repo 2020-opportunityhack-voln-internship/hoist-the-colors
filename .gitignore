@@ -17,4 +17,6 @@ Risk_Analysis/db.sqlite3
 
 Risk_Analysis/Risk_Analysis/secrets.py
 
+Risk_Analysis/key.key
+
 model

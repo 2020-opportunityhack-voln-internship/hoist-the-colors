@@ -8,6 +8,8 @@ import json
 from pymongo import MongoClient
 from threading import Thread
 from scoring.views import preprocess
+from authentication.views.encrypt_access import *
+
 
 
 
@@ -36,9 +38,15 @@ def facebook_auth(request):
 
 # fetches access token from user after authorization
 def facebook_access_token(request):
+    key = load_key()
     redirect_response = request.get_full_path()
     oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
     oauth.fetch_token(token_url, client_secret=client_secret, authorization_response=redirect_response)
+
+    # Create access_token dictonary
+    access_tokens = dict(oauth.token)
+    # Encrypt the dictonary
+    encrypted_access_token = encrypt(json.dumps(access_tokens).encode('utf-8'), key)
 
     # Connect to MongoDB
     try:
@@ -48,7 +56,8 @@ def facebook_access_token(request):
 
         # Created or Switched to collection names: tokens
         collection = db.fb_token
-        collection.insert_one(dict(oauth.token))
+        # Store encrypted access_token
+        collection.insert_one(encrypted_access_token)
         # Close connection
         conn.close()
     except:
@@ -58,6 +67,7 @@ def facebook_access_token(request):
 
 # gets data from user utilizing access token
 def facebook_data(request):
+    key = load_key()
     try:
         conn = MongoClient()
         print("Connected successfully!!!")
@@ -66,7 +76,8 @@ def facebook_data(request):
         collection = db.fb_token
         cursor = collection.find()
         for record in cursor:
-            token = record
+            access_token = json.loads(decrypt(record['access_token'], key).decode('utf-8'))
+            token = access_token
         conn.close()
     except:
         print("Could not connect to MongoDB")

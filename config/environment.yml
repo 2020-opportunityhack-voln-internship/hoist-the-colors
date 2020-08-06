@@ -5,3 +5,4 @@ dependencies:
   - pip
   - pip:
       - tweepy
+      - cryptography==3.0

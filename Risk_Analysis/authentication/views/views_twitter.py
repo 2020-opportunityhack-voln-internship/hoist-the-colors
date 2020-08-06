@@ -6,9 +6,12 @@ from django.http import HttpResponse
 from scoring.views import preprocess
 from pymongo import MongoClient
 from threading import Thread
+from authentication.views.encrypt_access import *
 
 
 # Create your views here.
+if not load_key():
+    write_key()
 
 # Json file that contains the user credentials to access Twitter API
 with open('authentication/credentials.json') as f:
@@ -30,6 +33,7 @@ def twitter_auth(request):
 
 # fetches access token from user after authorization
 def twitter_access_token(request):
+    key = load_key()
     request_token = request.session['request_token']
     del request.session['request_token']
 
@@ -37,9 +41,11 @@ def twitter_access_token(request):
     oauth.request_token = request_token
     verifier = request.GET.get('oauth_verifier')
     oauth.get_access_token(verifier)
-    
+
     # Create access_token dictonary
     access_tokens = { 'access_token': oauth.access_token, 'access_token_secret': oauth.access_token_secret }
+    # Encrypt the dictonary
+    encrypted_access_token = encrypt(json.dumps(access_tokens).encode('utf-8'), key)
     
     # Connect to MongoDB
     try:
@@ -49,7 +55,8 @@ def twitter_access_token(request):
 
         # Created or Switched to collection names: tokens
         collection = db.tokens
-        collection.insert_one(access_tokens)
+        # Store encrypted access_token
+        collection.insert_one({'access_token': encrypted_access_token})
 
         # Close connection
         conn.close()
@@ -61,6 +68,7 @@ def twitter_access_token(request):
 
 # gets data from user utilizing access token
 def twitter_data(request):
+    key = load_key()
     # Connect to MongoDB to retrive access_token
     try:
         conn = MongoClient()
@@ -70,9 +78,9 @@ def twitter_data(request):
         collection = db.tokens
         cursor = collection.find()
         for record in cursor:
-            print('record: ', record)
-            token = record['access_token']
-            token_secret = record['access_token_secret']
+            access_token = json.loads(decrypt(record['access_token'], key).decode('utf-8'))
+            token = access_token['access_token']
+            token_secret = access_token['access_token_secret']
         conn.close()
     except:
         print("Could not connect to MongoDB")

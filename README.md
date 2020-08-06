@@ -19,6 +19,7 @@ Project is created with:
 - Django version: 3.0.3
 - tweepy version: 3.8.0
 - pymongo version: 3.10.1
+- cryptography version: 3.0
 
 ## Installation
 
