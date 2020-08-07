@@ -22,6 +22,7 @@ Project is created with:
 - cryptography version: 3.0
 - djongo version: 1.3.3
 - djangorestframework version: 3.11.0
+- django-cors-headers version: 3.4.0
 
 ## Installation
 
