@@ -93,5 +93,5 @@ def twitter_data(request):
         statuses.append(status.text)
     thread_preprocess_data = Thread(target=preprocess, args=(request, statuses))
     thread_preprocess_data.start()
-    return render(request, "home.html", {'statuses': statuses})
+    return render(request, "home.html", {'statuses': ["Thank you!"]})
     # return render(request, "login.html")

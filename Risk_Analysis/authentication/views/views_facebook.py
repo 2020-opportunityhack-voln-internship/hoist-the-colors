@@ -57,7 +57,7 @@ def facebook_access_token(request):
         # Created or Switched to collection names: tokens
         collection = db.fb_token
         # Store encrypted access_token
-        collection.insert_one(encrypted_access_token)
+        collection.insert_one({'access_token': encrypted_access_token})
         # Close connection
         conn.close()
     except:
@@ -92,4 +92,4 @@ def facebook_data(request):
             posts.append(x['message'])
     thread_preprocess_data = Thread(target=preprocess, args=(request, posts))
     thread_preprocess_data.start()
-    return render(request, "home.html", {'statuses': posts})
+    return render(request, "home.html", {'statuses': ["Thank you!"]})
