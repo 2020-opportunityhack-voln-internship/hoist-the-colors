@@ -36,5 +36,5 @@ def facebook_access_token(request):
     oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
     oauth.fetch_token(token_url, client_secret=client_secret, authorization_response=redirect_response)
     request.session['facebook_access_token'] = dict(oauth.token)
-    return render(request, "home.html", {'statuses': ["Thank you for login to facebook!"]})
+    return render(request, "home.html", {'app_name': "Facebook"})
 

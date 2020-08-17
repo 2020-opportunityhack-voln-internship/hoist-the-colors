@@ -35,6 +35,6 @@ def twitter_access_token(request):
     request.session['twitter_access_token'] = oauth.access_token
     request.session['twitter_access_token_secret'] = oauth.access_token_secret
 
-    return render(request, "home.html", {'statuses': ["Thank you!"]})
+    return render(request, "home.html", {'app_name': "Twitter"})
 
 
