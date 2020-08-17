@@ -1,0 +1,58 @@
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: #bb1332;
+  stroke-width: 1.5px;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.focus circle {
+  fill: steelblue;
+}
+
+.focus text {
+  font-size: 14px;
+}
+
+.tooltip {
+  fill: white;
+  stroke: #000;
+}
+
+.tooltip-date,
+.tooltip-stars {
+  font-weight: bold;
+}
+
+.dot {
+  stroke: #fff;
+  fill: #bb1332;
+}
+
+.dot.selected {
+  fill: #420d35;
+}
+
+.dot:hover {
+  cursor: pointer;
+}
+
+path.highlight-path {
+  stroke: rgba(66, 13, 53, 0.342);
+  stroke-width: 1;
+  stroke-dasharray: 3;
+}

@@ -27,26 +27,26 @@ Risk_Analysis/scoring/.RNN_Model.pkl.icloud
 Risk_Analysis/scoring/.RNN_Model69.h5.icloud
 
 # dependencies
-#dashboard/node_modules/
-#/.pnp
-#.pnp.js
-#
-## testing
-#dashboard/coverage
-#dashboard/ProgressCircle.html
-#dashboard/ProgressCircle.css
-#dashboard/ProgressCircle.js
-#
-## production
-#dashboard/build
-#
-## misc
-#.env.local
-#.env.development.local
-#.env.test.local
-#.env.production.local
-#
-#dashboard/npm-debug.log*
-#dashboard/yarn-debug.log*
-#dashboard/yarn-error.log*
+Dashboard/node_modules/
+/.pnp
+.pnp.js
+
+# testing
+Dashboard/coverage
+Dashboard/ProgressCircle.html
+Dashboard/ProgressCircle.css
+Dashboard/ProgressCircle.js
+
+# production
+Dashboard/build
+
+# misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+Dashboard/npm-debug.log*
+Dashboard/yarn-debug.log*
+Dashboard/yarn-error.log*
 
