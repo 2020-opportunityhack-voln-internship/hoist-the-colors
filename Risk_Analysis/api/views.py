@@ -59,7 +59,9 @@ def insert_data(request):
     #         ],
     #     },
     # ];
-    User.objects.create(name='Jimmy Hendrix', risk_score=4, category_avg=[{ 'category_name': "toxic", 'score': 3 },{ 'category_name': "severe_toxic", 'score': 5 },{ 'category_name': "obscene", 'score': 4 },{ 'category_name': "threat", 'score': 3 },{ 'category_name': "insult", 'score': 2 },{ 'category_name': "identity_hate", 'score': 4 },],risk_run=[{'year': 2015, 'score': 1}, {'year':2016,'score':5},{'year':2017,'score':4},{'year':2018,'score':5}, {'year':2019,'score':6}, {'year':2020,'score':3}])
+    # User.objects.create(name='Jimmy Hendrix', risk_score=4, category_avg=[{ 'category_name': "toxic", 'score': 3 },{ 'category_name': "severe_toxic", 'score': 5 },{ 'category_name': "obscene", 'score': 4 },{ 'category_name': "threat", 'score': 3 },{ 'category_name': "insult", 'score': 2 },{ 'category_name': "identity_hate", 'score': 4 },],risk_run=[{'year': 2015, 'score': 1}, {'year':2016,'score':5},{'year':2017,'score':4},{'year':2018,'score':5}, {'year':2019,'score':6}, {'year':2020,'score':3}])
+    e = User.objects.create()
+    print(e.id)
     return HttpResponse(content=bytes("data entered",encoding="UTF-8"))
 
 # Create your views here.
