@@ -28,7 +28,7 @@ def home(request):
         return redirect('facebook_auth')
     elif app == ['Submit']:
         store_token(request)
-        return redirect('www.google.com')
+        return render(request, 'home.html')
 
 
 

@@ -6,11 +6,11 @@
         <a href="/authentication/">Back to Login</a>
     </button>
     <div class="col-sm-12 mb-3">
-        <p>Thank you for logging into {{ app_name }}!</p>
-{#        {% for status in statuses %}#}
-{#        {{  status }}#}
-{#        <br>#}
-{#        {% endfor %}#}
+        {% if app_name %}
+            <p>Thank you for logging into {{ app_name }}!</p>
+        {% else %}
+            <p>Thank you! </p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
