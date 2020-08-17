@@ -1,0 +1,22 @@
+.bar {
+  fill: #003366;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+
+  background: none repeat scroll 0 0 #fafafa;
+  border: 1px solid #bdbdbd;
+  padding: 5px;
+  text-align: center;
+}
+
+.bar:hover {
+  cursor: pointer;
+}
+
+.selected path {
+  stroke: #420d35;
+  stroke-width: 2;
+}
