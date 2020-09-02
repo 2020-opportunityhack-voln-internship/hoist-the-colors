@@ -9,4 +9,5 @@ dependencies:
       - djongo==1.3.3
       - djangorestframework==3.11.0
       - django-cors-headers==3.4.0
+      - nltk
 
