@@ -21,10 +21,9 @@ Risk_Analysis/key.key
 
 model
 
+Risk_Analysis/scoring/RNN_Model.h5
 Risk_Analysis/scoring/Tokenizer.pkl
-Risk_Analysis/scoring/.RNN_Model.h5.icloud
-Risk_Analysis/scoring/.RNN_Model.pkl.icloud
-Risk_Analysis/scoring/.RNN_Model69.h5.icloud
+
 
 # dependencies
 Dashboard/node_modules/
