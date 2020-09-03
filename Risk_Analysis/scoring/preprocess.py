@@ -4,7 +4,6 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 
 def preprocess(text):
-    print('in preprocess')
     # convert to lower case
     text = text.lower()
 
@@ -48,10 +47,8 @@ def preprocess(text):
 
     # remove special characters
     text = re.sub(r'[^?!.,:a-z\d ]', '', text, flags=re.IGNORECASE)
-    print('before stop words')
     # stop word removal
     STOPWORDS = set(stopwords.words('english'))
-    print('seet of stop words')
     text = " ".join([word for word in str(text).split() if word not in STOPWORDS])
 
     return text

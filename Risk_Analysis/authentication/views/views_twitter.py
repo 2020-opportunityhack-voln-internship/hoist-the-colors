@@ -11,7 +11,7 @@ with open('authentication/credentials.json') as f:
 consumer_key = credentials['twitter_consumer_key']
 consumer_secret = credentials['twitter_consumer_secret']
 
-callback = 'http://127.0.0.1:8000/authentication/twitter/callback'
+callback = 'http://localhost:8000/authentication/twitter/callback'
 
 
 # redirects to authorization url
