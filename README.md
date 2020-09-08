@@ -16,6 +16,7 @@ Non-profits need a way to vet the standing of people, specifically for pets, as 
 
 Project is created with:
 
+- Python version: 3.6.9
 - Django version: 3.0.3
 - tweepy version: 3.8.0
 - pymongo version: 3.10.1
@@ -23,6 +24,10 @@ Project is created with:
 - djongo version: 1.3.3
 - djangorestframework version: 3.11.0
 - django-cors-headers version: 3.4.0
+- nltk version: 3.5
+- scikit-learn version: 0.23.2
+- keras version: 2.4.3
+- tensorflow version: 2.2.0
 
 ## Installation
 
