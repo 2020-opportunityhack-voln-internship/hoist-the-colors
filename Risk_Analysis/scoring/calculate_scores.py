@@ -11,7 +11,7 @@ def model(text):
     text_predicts = model.predict(text_data, batch_size=256, verbose=1)
     return text_predicts[0]
 
-def calculate_scores(text, scores):
+def calculate_scores(text, year, scores):
     print(text)
     preprocessed_text = preprocess(text)
     predicted_score = model([preprocessed_text])
@@ -70,3 +70,12 @@ def calculate_scores(text, scores):
         scores["risk_score"] = scores.get("risk_score") + risk_score
     else:
         scores["risk_score"] = risk_score
+    if scores["years"]:
+        if year in scores["years"]:
+            scores["years"][year][0] += risk_score_sum
+            scores["years"][year][1] += 1
+        else:
+            scores["years"][year] = [risk_score, 1]
+    else:
+        scores["years"] = {year: [risk_score, 1]}
+
