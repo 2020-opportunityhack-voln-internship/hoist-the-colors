@@ -38,8 +38,9 @@ def fetch_facebook_data(access_token, scores):
     client_id = credentials['facebook_client_id']
 
     oauth = OAuth2Session(client_id, token=access_token)
-    user_data = oauth.get('https://graph.facebook.com/me/')
-    scores["user_name"] = user_data["first_name"] + " " + user_data["last_name"]
+    if scores["user_name"] is None:
+        user_data = oauth.get('https://graph.facebook.com/me/')
+        scores["user_name"] = json.loads(user_data.content.decode('utf-8'))["name"]
     user_posts = oauth.get('https://graph.facebook.com/me/posts')
     user_posts_json = json.loads(user_posts.content.decode('utf-8'))['data']
     posts = []
@@ -47,7 +48,7 @@ def fetch_facebook_data(access_token, scores):
         if i > 3:
             break
         if 'message' in x:
-            calculate_scores(x['message'], x['created_at'].year, scores)
+            calculate_scores(x['message'], x['created_time'][:4], scores)
     # preprocess(posts)
 
 def fetch_access_tokens():
@@ -72,19 +73,18 @@ def fetch_access_tokens():
 
     risk_run = []
     for year in scores["years"]:
-        risk_run.append({'year': year, 'score': scores["years"][year][0]/scores["years"][year][1]})
+        risk_run.append({'year': year, 'score': (scores["years"][year][0]/scores["years"][year][1])*100})
     for x in risk_run:
         print(type(x))
 
     if scores["total"] != 0:
-        scores["risk_score"] /= scores["total"]
-        scores["toxic"] /= scores["total"]
-        scores["severe_toxic"] /= scores["total"]
-        scores["obscene"] /= scores["total"]
-        scores["threat"] /= scores["total"]
-        scores["insult"] /= scores["total"]
+        scores["risk_score"] /= scores["total"] *100
+        scores["toxic"] /= scores["total"] *100
+        scores["severe_toxic"] /= scores["total"] *100
+        scores["obscene"] /= scores["total"] *100
+        scores["threat"] /= scores["total"] *100
+        scores["insult"] /= scores["total"] *100
         scores["identity_hate"] /= scores["total"]
-        print(scores)
         User.objects.create(name=scores["user_name"], risk_score=scores["risk_score"], category_avg=[{ 'category_name': "toxic", 'score': scores["toxic"] },{ 'category_name': "severe_toxic", 'score':  scores["severe_toxic"] },{ 'category_name': "obscene", 'score': scores["obscene"] },{ 'category_name': "threat", 'score': scores["threat"] },{ 'category_name': "insult", 'score':  scores["insult"] },{ 'category_name': "identity_hate", 'score': scores["identity_hate"] },],risk_run=risk_run)
 
     conn.close()
