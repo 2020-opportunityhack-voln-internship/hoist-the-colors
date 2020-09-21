@@ -18,8 +18,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class UserDataSerializer(serializers.HyperlinkedModelSerializer):
 
     category_avg = categories_avg_serializer(categories_average)
-    risk_run = TimeSerializer(Time)
+    risk_time = TimeSerializer(Time)
 
     class Meta:
         model = User
-        fields = ['id','name', 'risk_score', 'category_avg', 'risk_run']
+        fields = ['id','name', 'risk_score', 'category_avg', 'risk_time']

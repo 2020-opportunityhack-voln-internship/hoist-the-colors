@@ -22,7 +22,7 @@ class User(models.Model):
     name = models.CharField(max_length=60,blank=True)
     risk_score = models.FloatField(default=None,blank=True)
     category_avg = models.ArrayField(model_container=categories_average,null=True,blank=True)
-    risk_run = models.ArrayField(model_container=Time,null=True,blank=True)
+    risk_time = models.ArrayField(model_container=Time,null=True,blank=True)
     objects = models.DjongoManager()
 
     def __str__(self):

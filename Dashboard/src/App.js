@@ -28,7 +28,7 @@ export default class Dashboard extends Component {
     this.setState({ users });
     console.log("in did mount", users);
     if (users) {
-      const url = `http://127.0.0.1:8000/UserData/${users[1].id}`;
+      const url = `http://127.0.0.1:8000/UserData/${users[0].id}`;
       const response = await fetch(url);
       const selectedUser = await response.json();
       console.log("in did mount", selectedUser);
@@ -136,7 +136,7 @@ export default class Dashboard extends Component {
                     />
                   </Col>
                   <Col span={15}>
-                    <ViewLineChart data={this.state.selectedUser.risk_run} />
+                    <ViewLineChart data={this.state.selectedUser.risk_time} />
                   </Col>
                 </Row>
                 <Content>

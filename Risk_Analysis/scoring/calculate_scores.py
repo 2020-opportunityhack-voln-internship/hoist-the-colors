@@ -72,7 +72,7 @@ def calculate_scores(text, year, scores):
         scores["risk_score"] = risk_score
     if scores["years"]:
         if year in scores["years"]:
-            scores["years"][year][0] += risk_score_sum
+            scores["years"][year][0] += risk_score
             scores["years"][year][1] += 1
         else:
             scores["years"][year] = [risk_score, 1]

@@ -71,10 +71,10 @@ def fetch_access_tokens():
     if 'facebook_access_token' in access_tokens and access_tokens['facebook_access_token']:
         fetch_facebook_data(access_tokens['facebook_access_token'], scores)
 
-    risk_run = []
+    risk_time = []
     for year in scores["years"]:
-        risk_run.append({'year': year, 'score': (scores["years"][year][0]/scores["years"][year][1])*100})
-    for x in risk_run:
+        risk_time.append({'year': year, 'score': (scores["years"][year][0]/scores["years"][year][1])*100})
+    for x in risk_time:
         print(type(x))
 
     if scores["total"] != 0:
@@ -85,7 +85,7 @@ def fetch_access_tokens():
         scores["threat"] /= scores["total"] *100
         scores["insult"] /= scores["total"] *100
         scores["identity_hate"] /= scores["total"]
-        User.objects.create(name=scores["user_name"], risk_score=scores["risk_score"], category_avg=[{ 'category_name': "toxic", 'score': scores["toxic"] },{ 'category_name': "severe_toxic", 'score':  scores["severe_toxic"] },{ 'category_name': "obscene", 'score': scores["obscene"] },{ 'category_name': "threat", 'score': scores["threat"] },{ 'category_name': "insult", 'score':  scores["insult"] },{ 'category_name': "identity_hate", 'score': scores["identity_hate"] },],risk_run=risk_run)
+        User.objects.create(name=scores["user_name"], risk_score=round(scores["risk_score"], 2), category_avg=[{'category_name': "toxic", 'score': round(scores["toxic"], 2)}, {'category_name': "severe_toxic", 'score':  round(scores["severe_toxic"], 2)}, {'category_name': "obscene", 'score': round(scores["obscene"], 2)}, {'category_name': "threat", 'score': round(scores["threat"], 2)}, {'category_name': "insult", 'score':  round(scores["insult"], 2)}, {'category_name': "identity_hate", 'score': round(scores["identity_hate"], 2)}], risk_time= round(risk_time[::-1], 2))
 
     conn.close()
     # except Exception as e:
