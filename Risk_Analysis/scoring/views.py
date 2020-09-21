@@ -73,7 +73,7 @@ def fetch_access_tokens():
 
     risk_time = []
     for year in scores["years"]:
-        risk_time.append({'year': year, 'score': (scores["years"][year][0]/scores["years"][year][1])*100})
+        risk_time.append({'year': year, 'score': round((scores["years"][year][0]/scores["years"][year][1])*100, 2)})
     for x in risk_time:
         print(type(x))
 
@@ -85,7 +85,7 @@ def fetch_access_tokens():
         scores["threat"] /= scores["total"] *100
         scores["insult"] /= scores["total"] *100
         scores["identity_hate"] /= scores["total"]
-        User.objects.create(name=scores["user_name"], risk_score=round(scores["risk_score"], 2), category_avg=[{'category_name': "toxic", 'score': round(scores["toxic"], 2)}, {'category_name': "severe_toxic", 'score':  round(scores["severe_toxic"], 2)}, {'category_name': "obscene", 'score': round(scores["obscene"], 2)}, {'category_name': "threat", 'score': round(scores["threat"], 2)}, {'category_name': "insult", 'score':  round(scores["insult"], 2)}, {'category_name': "identity_hate", 'score': round(scores["identity_hate"], 2)}], risk_time= round(risk_time[::-1], 2))
+        User.objects.create(name=scores["user_name"], risk_score=round(scores["risk_score"], 2), category_avg=[{'category_name': "toxic", 'score': round(scores["toxic"], 2)}, {'category_name': "severe_toxic", 'score':  round(scores["severe_toxic"], 2)}, {'category_name': "obscene", 'score': round(scores["obscene"], 2)}, {'category_name': "threat", 'score': round(scores["threat"], 2)}, {'category_name': "insult", 'score':  round(scores["insult"], 2)}, {'category_name': "identity_hate", 'score': round(scores["identity_hate"], 2)}], risk_time= risk_time[::-1])
 
     conn.close()
     # except Exception as e:
