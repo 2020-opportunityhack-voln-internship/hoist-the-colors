@@ -27,7 +27,7 @@ const draw = (props) => {
       return d.category_name;
     })
   );
-  y.domain([0, yMax]);
+  y.domain([0, 100]);
   let opacity = d3.scaleLinear().domain([0, yMax]).range([0.2, 1.0]);
 
   // add the x Axis

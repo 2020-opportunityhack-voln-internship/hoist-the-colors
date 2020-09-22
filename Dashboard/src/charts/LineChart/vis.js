@@ -35,10 +35,10 @@ const draw = (props) => {
   var y = d3
     .scaleLinear()
     .domain([
-      0,
-      d3.max(data, function (d) {
-        return +d.score;
-      }),
+      0, 100
+      // d3.max(data, function (d) {
+      //   return +d.score;
+      // }),
     ])
     .range([height, 0]);
 

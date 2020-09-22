@@ -22,13 +22,13 @@ export default class Dashboard extends Component {
     };
   }
   async componentDidMount() {
-    const url = "http://127.0.0.1:8000/Users/";
+    const url = "http://localhost:8000/Users/";
     const response = await fetch(url);
     const users = await response.json();
     this.setState({ users });
     console.log("in did mount", users);
     if (users) {
-      const url = `http://127.0.0.1:8000/UserData/${users[0].id}`;
+      const url = `http://localhost:8000/UserData/${users[0].id}`;
       const response = await fetch(url);
       const selectedUser = await response.json();
       console.log("in did mount", selectedUser);
@@ -39,7 +39,7 @@ export default class Dashboard extends Component {
     this.setState({ selectedUserId: userId });
   };
   async fetchData(id) {
-    const url = `http://127.0.0.1:8000/UserData/${id}`;
+    const url = `http://localhost:8000/UserData/${id}`;
     const response = await fetch(url);
     const selectedUser = await response.json();
     this.setState({ selectedUser });
@@ -93,7 +93,8 @@ export default class Dashboard extends Component {
                 style={{ padding: 14 }}
                 placeholder="Enter name"
                 onSearch={(value) => console.log(value)}
-                enterButton
+                // enterButton
+                loading
               />
               <Menu theme="dark" mode="inline" defaultSelectedKeys={["2"]}>
                 {this.state.users.map((user) => (
@@ -132,7 +133,7 @@ export default class Dashboard extends Component {
                 <Row gutter={[20, 20]}>
                   <Col span={9}>
                     <ViewDonutChart
-                      data={this.state.selectedUser.risk_score * 10}
+                      data={this.state.selectedUser.risk_score}
                     />
                   </Col>
                   <Col span={15}>
