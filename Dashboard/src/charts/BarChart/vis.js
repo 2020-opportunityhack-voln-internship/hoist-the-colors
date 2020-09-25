@@ -7,6 +7,33 @@ const draw = (props) => {
   const margin = { top: 30, right: 30, bottom: 60, left: 60 };
   const width = props.width - margin.left - margin.right;
   const height = props.height - margin.top - margin.bottom;
+  const subgroups = ["global_avg_score", "current_user_score"];
+  const group_data = {
+    global_avg_score: {
+      toxic: 45,
+      severe_toxic: 30,
+      obscene: 35,
+      threat: 25,
+      insult: 47,
+      identity_hate: 50,
+    },
+    current_user_score: {
+      toxic: 10,
+      severe_toxic: 11,
+      obscene: 56,
+      threat: 34,
+      insult: 45,
+      identity_hate: 7,
+    },
+  };
+  const category_names = [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate",
+  ];
   let svg = d3
     .select(".vis-barchart")
     .append("svg")
@@ -35,10 +62,20 @@ const draw = (props) => {
     .append("g")
     .attr("class", "x-axis")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).tickSize(0));
 
   // add the y Axis
   svg.append("g").attr("class", "yaxis").call(d3.axisLeft(y));
+
+  // Another scale for subgroup position?
+  var xSubgroup = d3
+    .scaleBand()
+    .domain(subgroups)
+    .range([0, x.bandwidth()])
+    .padding([0.05]);
+
+  // color palette = one color per subgroup
+  var color = d3.scaleOrdinal().domain(subgroups).range(["#871F78", "#003366"]);
 
   // add text for x Axis
   svg
@@ -70,66 +107,139 @@ const draw = (props) => {
     .attr("class", "bar")
     .attr("transform", (d) => `translate(${x(d.category_name)}, ${0})`)
     .attr("height", height);
+  // .selectAll("rect");
+  // .filter(function () {
+  //   return !this.classList.contains("legend");
+  // });
 
-  let barWidth = x.bandwidth();
+  // .append("rect")
+  // .attr("x", function (d) {
+  //   return xSubgroup(d.key);
+  // })
+  // .attr("y", function (d) {
+  //   return y(d.value);
+  // })
+  // .attr("width", xSubgroup.bandwidth())
+  // .attr("fill", function (d) {
+  //   return color(d.key);
+  // })
+  // .attr("height", function (d) {
+  //   return height - y(d.value);
+  // });
+
+  let barWidth = xSubgroup.bandwidth();
 
   bars
+    .selectAll(".bars")
+    .data((d, i) =>
+      subgroups.map((key) => {
+        return { key: key, value: group_data[key][category_names[i]] };
+      })
+    )
+    .enter()
     .append("rect")
-    .attr("x", 0)
+    .attr("class", "bars")
     .attr("y", height)
     .attr("width", barWidth)
-    // .attr("fill", "#370C35")
-    .attr("height", (d) => {
-      return 0;
-    })
-    .attr("opacity", (d) => {
-      return opacity(d.score);
-    })
-    .on("mousemove", function () {
-      let del = 5;
+    .attr("fill", (d) => color(d.key))
+    .attr("height", 0)
+    .attr("opacity", (d) => opacity(d.value / 80))
+    .on("mousemove", () => {
+      let del = 3;
       d3.select(this)
         .transition()
         .ease(d3.easeLinear)
         .duration(200)
         .delay(0)
-        .attr("x", -del / 2)
+        .attr("x", (d) => {
+          return xSubgroup(d.key) - del / 2;
+        })
         .attr("width", barWidth + del);
     })
-    .on("mouseout", function () {
+    .on("mouseout", () => {
       d3.select(this)
         .transition()
         .ease(d3.easeLinear)
         .duration(200)
         .delay(0)
-        .attr("x", 0)
+        .attr("x", (d) => xSubgroup(d.key))
         .attr("width", barWidth);
     });
 
+  //Legend
+  let legend = [
+    ["#871F78", "Global average Score"],
+    ["#003366", "Current user score"],
+  ];
+
+  let legendIndicatorSize = 18;
+
+  let l = svg
+    .append("g")
+    .attr("class", "legend")
+    .attr("transform", "translate(810, 20)")
+    .style("backgroud-color", "#eee");
+
+  l.append("rect")
+    .attr("width", 135)
+    .attr("height", 60)
+    .attr("transform", `translate(-7,-7)`)
+    .attr("fill", "#eee");
+
+  l.selectAll("legend-indicator")
+    .data(legend)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", (d, i) => i * (legendIndicatorSize + 5))
+    .attr("width", legendIndicatorSize)
+    .attr("height", legendIndicatorSize)
+    .style("fill", (d) => d[0]);
+
+  l.selectAll("legend-label")
+    .data(legend)
+    .enter()
+    .append("text")
+    .attr("x", legendIndicatorSize + 8)
+    .attr(
+      "y",
+      (d, i) => i * (legendIndicatorSize + 5) + legendIndicatorSize / 2
+    )
+    .attr("text-anchor", "left")
+    .attr("alignment-baseline", "middle")
+    .style("font-size", "0.72em")
+    .style("fill", "#37474F")
+    .text((d) => d[1]);
+
   //animation
   svg
-    .selectAll("rect")
+    .selectAll(".bars")
     .transition()
     .duration(800)
+    .attr("x", (d) => xSubgroup(d.key))
     .attr("y", (d) => {
-      return y(d.score);
+      return y(d.value);
     })
-    .attr("height", (d) => {
-      return height - y(d.score);
-    })
-    .delay(function (d, i) {
-      return i * 80;
-    })
+    .attr("height", (d) => height - y(d.value))
+    .delay((d, i) => i * 80)
     .on("end", () => {
       bars
+        .selectAll(".bars")
         .append("text")
         .attr("class", "bar-text")
-        .attr("x", barWidth / 2)
-        .attr("y", (d, i, nodes) => y(data[i].score) - 20)
+        .attr("x", (d) => {
+          return xSubgroup(d.key) + barWidth / 2;
+        })
+        .attr("y", (d) => {
+          return y(d.value) - 10;
+        })
         .attr("dy", "1em")
         .attr("font-size", "0.8em")
         .attr("text-anchor", "middle")
         .attr("fill", "black")
-        .text((d, i, nodes) => data[i].score);
+        .text((d) => {
+          return d.value;
+        });
     });
 };
 

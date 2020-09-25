@@ -1,4 +1,3 @@
-// import React from "react";
 import React, { Component } from "react";
 import "./App.css";
 import user_data from "./data";
@@ -8,7 +7,7 @@ import ViewDonutChart from "./views/ViewDonutChart";
 import ViewLineChart from "./views/ViewLineChart";
 import ViewBarChart from "./views/ViewBarChart";
 const { Header, Content, Footer, Sider } = Layout;
-const { Search } = Input;
+// const { Search } = Input;
 
 export default class Dashboard extends Component {
   // const [count, setCount] = useState(0);
@@ -18,6 +17,7 @@ export default class Dashboard extends Component {
       selectedUser: null,
       selectedUserId: null,
       users: null,
+      filteredUsers: null,
       loading: true,
     };
   }
@@ -25,41 +25,46 @@ export default class Dashboard extends Component {
     const url = "http://localhost:8000/Users/";
     const response = await fetch(url);
     const users = await response.json();
-    this.setState({ users });
-    console.log("in did mount", users);
+    this.setState({ users, filteredUsers: users });
+
     if (users) {
       const url = `http://localhost:8000/UserData/${users[0].id}`;
       const response = await fetch(url);
       const selectedUser = await response.json();
-      console.log("in did mount", selectedUser);
       this.setState({ selectedUser });
     }
   }
   selectUser = (userId) => {
     this.setState({ selectedUserId: userId });
   };
+
   async fetchData(id) {
     const url = `http://localhost:8000/UserData/${id}`;
     const response = await fetch(url);
     const selectedUser = await response.json();
     this.setState({ selectedUser });
   }
+
+  handleSearchChange = (username) => {
+    if (username == "") {
+      this.setState({ filteredUsers: this.state.users });
+      return;
+    }
+    username = username.toUpperCase();
+    let filteredUsers = this.state.users.filter(
+      (user) => user.name.toUpperCase().indexOf(username) > -1
+    );
+    this.setState({ filteredUsers });
+  };
+
   componentDidUpdate(prevProps, prevState) {
     // Typical usage (don't forget to compare props):
-    console.log(
-      "In update",
-      this.state.selectedUserId,
-      prevState.selectedUserId
-    );
     if (this.state.selectedUserId !== prevState.selectedUserId) {
       this.fetchData(this.state.selectedUserId);
     }
   }
   render() {
-    console.log("render");
     if (this.state.selectedUser) {
-      console.log("In render", this.state.users);
-      console.log("In render", this.state.selectedUser);
       return (
         // <div>
         //   <p style={{ color: "white", fontWeight: "bold", fontSize: 25 }}>
@@ -89,15 +94,16 @@ export default class Dashboard extends Component {
               }}
             >
               {/* <div className="logo" /> */}
-              <Search
-                style={{ padding: 14 }}
+              <Input
+                style={{ width: 180, margin: 10 }}
                 placeholder="Enter name"
-                onSearch={(value) => console.log(value)}
+                onChange={({ target: { value } }) => {
+                  this.handleSearchChange(value);
+                }}
                 // enterButton
-                loading
               />
               <Menu theme="dark" mode="inline" defaultSelectedKeys={["2"]}>
-                {this.state.users.map((user) => (
+                {this.state.filteredUsers.map((user) => (
                   <Menu.Item
                     key={user.id}
                     onClick={() => this.selectUser(user.id)}
@@ -132,9 +138,7 @@ export default class Dashboard extends Component {
               >
                 <Row gutter={[20, 20]}>
                   <Col span={9}>
-                    <ViewDonutChart
-                      data={this.state.selectedUser.risk_score}
-                    />
+                    <ViewDonutChart data={this.state.selectedUser.risk_score} />
                   </Col>
                   <Col span={15}>
                     <ViewLineChart data={this.state.selectedUser.risk_time} />

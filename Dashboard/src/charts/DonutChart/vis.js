@@ -4,6 +4,7 @@ import "./style.css";
 const draw = (props) => {
   d3.select(".vis-donutchart > *").remove();
   const data = props.data;
+  console.log("DATA", data);
   const query = ".vis-donutchart";
   const margin = { top: 30, right: 30, bottom: 60, left: 60 };
   const cWidth = props.width - margin.left - margin.right;
@@ -245,24 +246,6 @@ const draw = (props) => {
     .append("g")
     .attr("transform", "translate(" + width / 1.5 + "," + height / 2 + ")");
 
-  const global_avg = 67;
-  const angle = (global_avg / 100) * 360 + 90;
-  const radians = (angle * Math.PI) / 180;
-  const x1 = -100 * Math.cos(radians);
-  const y1 = -100 * Math.sin(radians);
-  const x2 = -(100 + options.stroke.width) * Math.cos(radians);
-  const y2 = -(100 + options.stroke.width) * Math.sin(radians);
-
-  //Draw line for global risk score
-  svg
-    .append("line")
-    .style("stroke", "black")
-    .style("stroke-width", 1)
-    .attr("x1", x1)
-    .attr("y1", y1)
-    .attr("x2", x2)
-    .attr("y2", y2);
-
   // add gradients defs
   var defs = svg.append("svg:defs");
 
@@ -464,6 +447,24 @@ const draw = (props) => {
     //   });
   };
   update();
+
+  const global_avg = 25;
+  const angle = (global_avg / 100) * 360 + 90;
+  const radians = (angle * Math.PI) / 180;
+  const x1 = -100 * Math.cos(radians);
+  const y1 = -100 * Math.sin(radians);
+  const x2 = -(100 + options.stroke.width) * Math.cos(radians);
+  const y2 = -(100 + options.stroke.width) * Math.sin(radians);
+
+  //Draw line for global risk score
+  svg
+    .append("line")
+    .style("stroke", "black")
+    .style("stroke-width", 2)
+    .attr("x1", x1)
+    .attr("y1", y1)
+    .attr("x2", x2)
+    .attr("y2", y2);
 };
 
 export default draw;
